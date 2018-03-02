@@ -1,0 +1,51 @@
+FROM php:7.1-fpm
+
+MAINTAINER Daniel Rose <daniel.rose@fondof.de>
+
+ENV TERM xterm
+
+RUN set -ex
+
+RUN apt-get update; \
+    apt-get install -y \
+        git \
+        wget \
+        postgresql-client \
+        ssh \
+        nano \
+        vim \
+        zsh \
+        curl \
+        libbz2-dev \
+        libcurl4-gnutls-dev \
+        libjpeg-dev \
+        libpng12-dev \
+        libgmp-dev \
+        libicu-dev \
+        libmcrypt-dev \
+        libpq-dev \
+        libxml2-dev
+
+# nodejs
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -; \
+    apt-get install -y nodejs; \
+    npm install --global yarn; \
+    rm -rf /var/lib/apt/lists/*
+
+# required list of php ext
+RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
+    docker-php-ext-install bcmath bz2 curl gd gmp intl mbstring mcrypt pdo pdo_pgsql pgsql xml zip
+
+# redis
+RUN pecl install redis-3.1.6; \
+    docker-php-ext-enable redis
+
+# composer
+RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/1b137f8bf6db3e79a38a5bc45324414a6b1f9df2/web/installer -O /tmp/installer; \
+    php /tmp/installer --no-ansi --install-dir=/usr/bin --filename=composer --quiet; \
+    rm /tmp/installer
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["php-fpm"]
