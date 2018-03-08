@@ -14,12 +14,14 @@ promptYN () {
 
 if promptYN "Do you use docker-machine?"; then
     read -p "Please enter the name of your docker-machine: " dockerMachineName
+    dockerMachineName="${dockerMachineName:-Docker}"
 
     eval "$(docker-machine env ${dockerMachineName})"
 fi
 
 echo "Please enter the following information of your private docker registry!"
 read -p "URL: " url
+url="${url:-registry.docker.fondofbags.com:5005}"
 read -p "Username: " username
 read -s -p "Password: " password
 
