@@ -6,6 +6,9 @@ ENV TERM xterm
 
 RUN set -ex
 
+# add backports
+RUN echo "deb http://ftp.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+
 RUN apt-get update; \
     apt-get install -y \
         git \
@@ -25,6 +28,12 @@ RUN apt-get update; \
         libmcrypt-dev \
         libpq-dev \
         libxml2-dev
+
+# oh my zsh
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true;
+
+# jre8
+RUN apt-get install -yt jessie-backports openjdk-8-jre
 
 # nodejs
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -; \

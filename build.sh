@@ -24,10 +24,10 @@ read -p "Username: " username
 read -s -p "Password: " password
 
 docker login --username ${username} --password ${password} ${url}
-docker build --build-arg APPLICATION=yves -t ${url}/docker/spryker-nginx:1.13.8-yves nginx/ --no-cache
-docker build --build-arg APPLICATION=zed -t ${url}/docker/spryker-nginx:1.13.8-zed nginx/ --no-cache
-docker build -t ${url}/docker/spryker-php-fpm:7.1 php-fpm/ --no-cache
-docker build -t ${url}/docker/spryker-php-fpm:7.1-xdebug php-fpm/xdebug/ --no-cache
+docker build --build-arg APPLICATION=yves -t ${url}/docker/spryker-nginx:1.13.8-yves nginx/
+docker build --build-arg APPLICATION=zed -t ${url}/docker/spryker-nginx:1.13.8-zed nginx/
+docker build -t ${url}/docker/spryker-php-fpm:7.1 php-fpm/
+docker build -t ${url}/docker/spryker-php-fpm:7.1-xdebug php-fpm/xdebug/
 
 docker push ${url}/docker/spryker-nginx:1.13.8-yves
 docker push ${url}/docker/spryker-nginx:1.13.8-zed
