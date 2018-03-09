@@ -27,7 +27,7 @@ if [ ! -f "${PATH_TO_JENKINS_SLAVE}" ]; then
 fi
 
 (java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} get-node ${JENKINS_SLAVE_NAME} 2>&1 || true ) > /tmp/jenkins.node
-if grep ERROR: ${PATH_TO_JENKINS_CLI} >/dev/null; then
+if grep ERROR: /tmp/jenkins.node >/dev/null; then
     cat <<EOF | java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} create-node ${JENKINS_SLAVE_NAME}
         <slave>
             <name>backend</name>
