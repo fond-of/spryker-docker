@@ -1,4 +1,4 @@
-FROM registry.docker.fondofbags.com:5005/docker/spryker-php-fpm:7.1
+FROM registry.docker.fondofbags.com:5005/docker/spryker-php-fpm:7.1-dev
 
 MAINTAINER Daniel Rose <daniel.rose@fondof.de>
 
