@@ -26,14 +26,18 @@ read -p "Username: " username
 read -s -p "Password: " password
 
 docker login --username ${username} --password ${password} ${url}
-docker build --build-arg APPLICATION=yves -t ${url}/docker/spryker-nginx:1.13.8-yves nginx/
-docker build --build-arg APPLICATION=zed -t ${url}/docker/spryker-nginx:1.13.8-zed nginx/
-docker build -t ${url}/docker/spryker-php-fpm:7.1 php-fpm/
-docker build -t ${url}/docker/spryker-php-fpm:7.1-dev php-fpm/dev
-docker build -t ${url}/docker/spryker-php-fpm:7.1-xdebug php-fpm/xdebug/
 
+docker build --build-arg APPLICATION=yves -t ${url}/docker/spryker-nginx:1.13.8-yves nginx/ --no-cache
 docker push ${url}/docker/spryker-nginx:1.13.8-yves
+
+docker build --build-arg APPLICATION=zed -t ${url}/docker/spryker-nginx:1.13.8-zed nginx/ --no-cache
 docker push ${url}/docker/spryker-nginx:1.13.8-zed
+
+docker build -t ${url}/docker/spryker-php-fpm:7.1 php-fpm/ --no-cache
 docker push ${url}/docker/spryker-php-fpm:7.1
+
+docker build -t ${url}/docker/spryker-php-fpm:7.1-dev php-fpm/dev --no-cache
 docker push ${url}/docker/spryker-php-fpm:7.1-dev
+
+docker build -t ${url}/docker/spryker-php-fpm:7.1-xdebug php-fpm/xdebug/ --no-cache
 docker push ${url}/docker/spryker-php-fpm:7.1-xdebug

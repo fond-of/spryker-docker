@@ -9,6 +9,15 @@ PATH_TO_JENKINS_SLAVE="/usr/local/bin/jenkins-slave.jar"
 JENKINS_URL="http://jenkins:8080"
 JENKINS_SLAVE_NAME="zed-worker"
 
+set +e
+
+which catchmail
+if [ $? == 0 ]; then
+    echo "sendmail_path = /usr/bin/env $(which catchmail) --smtp-ip $(getent hosts mailcatcher | awk '{ print $1 }') --smtp-port 1025 -f www-data@localhost" | tee /usr/local/etc/php/conf.d/docker-php-ext-mailcatcher.ini
+fi
+
+set -e
+
 waitForHttpService() {
   url=$1; shift
   until curl -s -k  ${url} -o /dev/null -L --fail $*; do
