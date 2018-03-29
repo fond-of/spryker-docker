@@ -14,7 +14,4 @@ RUN apt-get update; \
 # mailcatcher client
 RUN gem install mailcatcher
 
-# use catchmail as sendmail path
-RUN echo "sendmail_path = /usr/bin/env $(which catchmail) --smtp-ip $(getent hosts mailcatcher | awk '{ print $1 }') --smtp-port 1025 -f www-data@localhost" | tee /usr/local/etc/php/conf.d/docker-php-ext-mailcatcher.ini
-
 COPY php.ini /usr/local/etc/php/php.ini

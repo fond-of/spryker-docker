@@ -6,7 +6,7 @@ PATH_TO_SPRYKER="/var/www/spryker/releases/current/"
 PATH_TO_JENKINS_CLI="/usr/local/bin/jenkins-cli.jar"
 PATH_TO_JENKINS_SLAVE="/usr/local/bin/jenkins-slave.jar"
 
-JENKINS_URL="http://jenkins:8080"
+JENKINS_URL="${JENKINS_URL:-http://jenkins:8080}"
 JENKINS_SLAVE_NAME="zed-worker"
 
 set +e
