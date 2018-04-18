@@ -19,25 +19,36 @@ if promptYN "Do you use docker-machine?"; then
     eval "$(docker-machine env ${dockerMachineName})"
 fi
 
-echo "Please enter the following information of your private docker registry!"
-read -p "URL: " url
-url="${url:-registry.docker.fondofbags.com:5005}"
-read -p "Username: " username
-read -s -p "Password: " password
+if promptYN "Do you use Amazon ECR?"; then
+    echo "Please enter the following information!"
 
-docker login --username ${username} --password ${password} ${url}
+    read -p "Region: " region
+    region="${region:-eu-central-1}"
+    eval $(aws ecr get-login --no-include-email --region ${region})
 
-docker build --build-arg APPLICATION=yves -t ${url}/docker/spryker-nginx:1.13.8-yves nginx/ --no-cache
-docker push ${url}/docker/spryker-nginx:1.13.8-yves
+    read -p "URL: " url
+    url="${url:-493499581187.dkr.ecr.eu-central-1.amazonaws.com}"
+else
+    echo "Please enter the following information of your private docker registry!"
 
-docker build --build-arg APPLICATION=zed -t ${url}/docker/spryker-nginx:1.13.8-zed nginx/ --no-cache
-docker push ${url}/docker/spryker-nginx:1.13.8-zed
+    read -p "URL: " url
+    read -p "Username: " username
+    read -s -p "Password: " password
 
-docker build -t ${url}/docker/spryker-php-fpm:7.1 php-fpm/ --no-cache
-docker push ${url}/docker/spryker-php-fpm:7.1
+    docker login --username ${username} --password ${password} ${url}
+fi
 
-docker build -t ${url}/docker/spryker-php-fpm:7.1-dev php-fpm/dev --no-cache
-docker push ${url}/docker/spryker-php-fpm:7.1-dev
+docker build --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:1.13.8 nginx/ --no-cache
+docker push ${url}/fond-of-spryker/yves:1.13.8
 
-docker build -t ${url}/docker/spryker-php-fpm:7.1-xdebug php-fpm/xdebug/ --no-cache
-docker push ${url}/docker/spryker-php-fpm:7.1-xdebug
+docker build --build-arg APPLICATION=zed -t ${url}/fond-of-spryker/zed:1.13.8 nginx/ --no-cache
+docker push ${url}/fond-of-spryker/zed:1.13.8
+
+docker build -t ${url}/fond-of-spryker/php-fpm:7.1 php-fpm/ --no-cache
+docker push ${url}/fond-of-spryker/php-fpm:7.1
+
+docker build -t ${url}/fond-of-spryker/php-fpm:7.1-dev php-fpm/dev --no-cache
+docker push ${url}/fond-of-spryker/php-fpm:7.1-dev
+
+docker build -t ${url}/fond-of-spryker/php-fpm:7.1-xdebug php-fpm/xdebug/ --no-cache
+docker push ${url}/fond-of-spryker/php-fpm:7.1-xdebug

@@ -53,7 +53,7 @@ EOF
 fi
 
 java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} offline-node ""
-java -jar ${PATH_TO_JENKINS_SLAVE} -jnlpUrl ${JENKINS_URL}/computer/${JENKINS_SLAVE_NAME}/slave-agent.jnlp &
+nohup java -jar ${PATH_TO_JENKINS_SLAVE} -jnlpUrl ${JENKINS_URL}/computer/${JENKINS_SLAVE_NAME}/slave-agent.jnlp > /dev/null &
 
 if [ -d "${PATH_TO_SPRYKER}public" ] && [ ! -L "/var/www/html" ]; then
     rm -Rf /var/www/html

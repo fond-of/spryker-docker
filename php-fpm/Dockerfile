@@ -14,6 +14,7 @@ RUN apt-get update; \
         git \
         wget \
         postgresql-client \
+        graphviz \
         ssh \
         nano \
         vim \
@@ -59,6 +60,7 @@ RUN composer global require hirak/prestissimo
 COPY php.ini /usr/local/etc/php/php.ini
 
 COPY docker-entrypoint.sh /usr/local/bin/
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["php-fpm"]
