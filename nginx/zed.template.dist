@@ -2,10 +2,16 @@ server {
     listen 80;
 
     server_name  localhost;
-    #access_log  /var/www/spryker/releases/current/data/logs/${APPLICATION_S}/zed-access.log;
 
-    set ${ESC}application_env ${APPLICATION_ENV};
-    set ${ESC}application_store ${APPLICATION_STORE};
+    map ${ESC}http_host ${ESC}application_env {
+        ^zed\.dev.* development;
+        ^zed\.stag(e|ing).* staging;
+        ^zed\.(www\.)?.* production;
+    }
+
+    map ${ESC}http_host ${ESC}application_store {
+        ^zed\..*domain\.com DOMAIN;
+    }
 
     root /var/www/spryker/releases/current/public/Zed;
 

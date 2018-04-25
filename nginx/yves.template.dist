@@ -2,10 +2,16 @@ server {
     listen 80;
 
     server_name  localhost;
-    #access_log  /var/www/spryker/releases/current/data/logs/${APPLICATION_ENV}/yves-access.log;
 
-    set ${ESC}application_env ${APPLICATION_ENV};
-    set ${ESC}application_store ${APPLICATION_STORE};
+    map ${ESC}http_host ${ESC}application_env {
+        ^dev.* development;
+        ^stag(e|ing).* staging;
+        ^www.* production;
+    }
+
+    map ${ESC}http_host ${ESC}application_store {
+        ^.*domain\.com DOMAIN;
+    }
 
     root /var/www/spryker/releases/current/public/Yves;
 
