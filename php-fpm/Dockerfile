@@ -15,6 +15,7 @@ RUN apt-get update; \
         wget \
         postgresql-client \
         graphviz \
+        python-pip \
         ssh \
         nano \
         vim \
@@ -58,6 +59,17 @@ RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/1b137f8bf6db
 RUN composer global require hirak/prestissimo
 
 COPY php.ini /usr/local/etc/php/php.ini
+
+RUN easy_install supervisor; \
+    mkdir -p /etc/supervisor/conf.d; \
+    echo_supervisord_conf > /etc/supervisor/supervisord.conf; \
+    echo "[include]" >> /etc/supervisor/supervisord.conf; \
+    echo "files = /etc/supervisor/conf.d/*.conf" >> /etc/supervisor/supervisord.conf;
+
+# jenkins
+RUN mkdir -p /data; \
+    chown www-data:www-data /data -R; \
+    chown www-data:www-data /var/www/ -R;
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
