@@ -1,4 +1,4 @@
-FROM registry.docker.fondofbags.com:5005/docker/spryker-php-fpm:7.1
+FROM 493499581187.dkr.ecr.eu-central-1.amazonaws.com/fond-of-spryker/php-fpm:7.1
 
 MAINTAINER Daniel Rose <daniel.rose@fondof.de>
 
@@ -11,7 +11,11 @@ RUN apt-get update; \
         build-essential \
         libsqlite3-dev
 
+RUN rm -rf /var/lib/apt/lists/*
+
 # mailcatcher client
 RUN gem install mailcatcher
 
 COPY php.ini /usr/local/etc/php/php.ini
+
+COPY supervisord.conf /etc/supervisor/conf.d/jenkins-slave.conf

@@ -13,7 +13,6 @@ RUN apt-get update; \
     apt-get install -y \
         git \
         wget \
-        postgresql-client \
         graphviz \
         python-pip \
         ssh \
@@ -28,8 +27,17 @@ RUN apt-get update; \
         libgmp-dev \
         libicu-dev \
         libmcrypt-dev \
-        libpq-dev \
         libxml2-dev
+
+# postgresql-client
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
+RUN apt-get update; \
+    apt-get install -y \
+        postgresql-client-9.6 \
+        libpq5 \
+        libpq-dev
 
 # oh my zsh
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true;
@@ -71,6 +79,7 @@ RUN mkdir -p /data; \
     chown www-data:www-data /data -R; \
     chown www-data:www-data /var/www/ -R;
 
+COPY connect-to-jenkins-master.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]

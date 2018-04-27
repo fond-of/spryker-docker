@@ -1,0 +1,11 @@
+FROM 493499581187.dkr.ecr.eu-central-1.amazonaws.com/fond-of-spryker/php-fpm:7.1
+
+MAINTAINER Daniel Rose <daniel.rose@fondof.de>
+
+RUN set -ex
+
+COPY supervisord.conf /etc/supervisor/conf.d/jenkins-slave.conf
+
+ENTRYPOINT []
+
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
