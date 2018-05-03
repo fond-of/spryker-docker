@@ -1,17 +1,17 @@
+map ${ESC}http_host ${ESC}application_env {
+    ~*dev\..* development;
+    ~*stag(e|ing)\..* staging;
+    ~*(prod|www)\..* production;
+}
+
+map ${ESC}http_host ${ESC}application_store {
+    ~*.*\.domain\.com DOMAIN;
+}
+
 server {
     listen 80;
 
     server_name  localhost;
-
-    map ${ESC}http_host ${ESC}application_env {
-        ^dev.* development;
-        ^stag(e|ing).* staging;
-        ^www.* production;
-    }
-
-    map ${ESC}http_host ${ESC}application_store {
-        ^.*domain\.com DOMAIN;
-    }
 
     root /var/www/spryker/releases/current/public/Yves;
 

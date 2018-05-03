@@ -1,17 +1,17 @@
+map ${ESC}http_host ${ESC}application_env {
+    ~*zed\.dev\..* development;
+    ~*zed\.stag(e|ing)\..* staging;
+    ~*zed\.(prod|www)\..* production;
+}
+
+map ${ESC}http_host ${ESC}application_store {
+    ~*zed\..*\.domain\.com DOMAIN;
+}
+
 server {
     listen 80;
 
     server_name  localhost;
-
-    map ${ESC}http_host ${ESC}application_env {
-        ^zed\.dev.* development;
-        ^zed\.stag(e|ing).* staging;
-        ^zed\.(www\.)?.* production;
-    }
-
-    map ${ESC}http_host ${ESC}application_store {
-        ^zed\..*domain\.com DOMAIN;
-    }
 
     root /var/www/spryker/releases/current/public/Zed;
 
