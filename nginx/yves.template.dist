@@ -15,6 +15,24 @@ server {
 
     root /var/www/spryker/releases/current/public/Yves;
 
+    # Add trailing slash
+    # rewrite ^([^.]*[^/])$ $1/ permanent;
+
+    # Redirect http to https
+    # set ${ESC}can_redirect_to_https '';
+    #
+    # if (${ESC}host !~ ^dev\.) {
+    #    set ${ESC}can_redirect_to_https 1;
+    # }
+    #
+    # if (${ESC}http_x_forwarded_proto = 'http') {
+    #    set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+    #
+    # if (${ESC}can_redirect_to_https = 11) {
+    #    return 301 https://${ESC}host${ESC}request_uri;
+    # }
+
     ###
     ### Common Yves settings (to be included in vhost definition)
     ### This file is maintained by salt
