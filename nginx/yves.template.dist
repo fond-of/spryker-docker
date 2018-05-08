@@ -18,6 +18,9 @@ server {
     # Add trailing slash
     # rewrite ^([^.]*[^/])$ $1/ permanent;
 
+    # Remove trailing slash
+    # rewrite ^/(.*)/$ /$1 permanent;
+
     # Redirect http to https
     # set ${ESC}can_redirect_to_https '';
     #
@@ -25,11 +28,15 @@ server {
     #    set ${ESC}can_redirect_to_https 1;
     # }
     #
+    # if (${ESC}host !~ ^stag(e|ing)\.) {
+    #   set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+    #
     # if (${ESC}http_x_forwarded_proto = 'http') {
     #    set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
     # }
     #
-    # if (${ESC}can_redirect_to_https = 11) {
+    # if (${ESC}can_redirect_to_https = 111) {
     #    return 301 https://${ESC}host${ESC}request_uri;
     # }
 
