@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1-fpm-jessie
 
 MAINTAINER Daniel Rose <daniel.rose@fondof.de>
 
@@ -23,7 +23,7 @@ RUN apt-get update; \
         libbz2-dev \
         libcurl4-gnutls-dev \
         libjpeg-dev \
-        libpng12-dev \
+        libpng-dev \
         libgmp-dev \
         libicu-dev \
         libmcrypt-dev \
