@@ -5,14 +5,7 @@ map ${ESC}http_host ${ESC}application_env {
 }
 
 map ${ESC}http_host ${ESC}application_store {
-    ~*.*\.aevor\.com AEVOR;
-    ~*.*\.ergobag\.com ERGOBAG_COM;
-    ~*.*\.ergobag\.de ERGOBAG_DE;
-    ~*.*\.ergobag\.ch ERGOBAG_US;
-    ~*.*\.ergobag\.us ERGOBAG_CH;
-    ~*.*\.affenzahn\.de AFFENZAHN_CH;
-    ~*.*\.affenzahn\.ch AFFENZAHN_COM;
-    ~*.*\.affenzahn\.us AFFENZAHN_US;
+    ~*.*\.domain\.com DOMAIN;
 }
 
 server {
@@ -26,26 +19,26 @@ server {
     # rewrite ^([^.]*[^/])$ $1/ permanent;
 
     # Remove trailing slash
-    rewrite "/([a-z]{2}/.+)/$" /$1 permanent;
+    # rewrite ^/(.*)/$ /$1 permanent;
 
     # Redirect http to https
-    set ${ESC}can_redirect_to_https '';
-
-    if (${ESC}host !~ ^dev\.) {
-        set ${ESC}can_redirect_to_https 1;
-    }
-
-    if (${ESC}host !~ ^stag(e|ing)\.) {
-        set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
-    }
-
-    if (${ESC}http_x_forwarded_proto = 'http') {
-        set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
-    }
-
-    if (${ESC}can_redirect_to_https = 111) {
-        return 301 https://${ESC}host${ESC}request_uri;
-    }
+    # set ${ESC}can_redirect_to_https '';
+    #
+    # if (${ESC}host !~ ^dev\.) {
+    #    set ${ESC}can_redirect_to_https 1;
+    # }
+    #
+    # if (${ESC}host !~ ^stag(e|ing)\.) {
+    #   set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+    #
+    # if (${ESC}http_x_forwarded_proto = 'http') {
+    #    set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+    #
+    # if (${ESC}can_redirect_to_https = 111) {
+    #    return 301 https://${ESC}host${ESC}request_uri;
+    # }
 
     ###
     ### Common Yves settings (to be included in vhost definition)
