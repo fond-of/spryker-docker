@@ -1,1 +1,2 @@
 nginx/*.template
+nginx/*.htpasswd
