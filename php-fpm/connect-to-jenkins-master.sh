@@ -41,4 +41,4 @@ EOF
 fi
 
 /usr/bin/java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} offline-node ""
-/usr/bin/java -jar ${PATH_TO_JENKINS_SLAVE} -jnlpUrl ${JENKINS_URL}/computer/${JENKINS_SLAVE_NAME}/slave-agent.jnlp
+supervisorctl start jenkins_slave
