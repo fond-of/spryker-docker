@@ -38,6 +38,9 @@ else
     docker login --username ${username} --password ${password} ${url}
 fi
 
+docker build --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:1.13.8 nginx/ --no-cache
+docker push ${url}/fond-of-spryker/glue:1.13.8
+
 docker build --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:1.13.8 nginx/ --no-cache
 docker push ${url}/fond-of-spryker/yves:1.13.8
 

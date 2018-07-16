@@ -1,7 +1,7 @@
 map ${ESC}http_host ${ESC}application_env {
     ~*zed\.dev\..* development;
     ~*zed\.stag(e|ing)\..* staging;
-    ~*zed\.(prod|www)\..* production;
+    ~*zed\..* production;
 }
 
 map ${ESC}http_host ${ESC}application_store {
@@ -14,6 +14,25 @@ server {
     server_name  localhost;
 
     root /var/www/spryker/releases/current/public/Zed;
+
+    # Redirect http to https
+    # set ${ESC}can_redirect_to_https '';
+    #
+    # if (${ESC}host !~ ^dev\.) {
+    #     set ${ESC}can_redirect_to_https 1;
+    # }
+    #
+    # if (${ESC}host !~ ^stag(e|ing)\.) {
+    #     set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+    #
+    # if (${ESC}http_x_forwarded_proto = 'http') {
+    #     set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+    #
+    # if (${ESC}can_redirect_to_https = 111) {
+    #     return 301 https://${ESC}host${ESC}request_uri;
+    # }
 
     ###
     ### Common Zed settings (to be included in vhost definition)
