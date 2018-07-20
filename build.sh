@@ -46,22 +46,22 @@ fi
 
 
 docker build --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:1.13.8 ${nginxPrefix}nginx/ --no-cache
-#docker push ${url}/fond-of-spryker/glue:1.13.8
+docker push ${url}/fond-of-spryker/glue:1.13.8
 
 docker build --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:1.13.8 ${nginxPrefix}nginx/ --no-cache
-#docker push ${url}/fond-of-spryker/yves:1.13.8
+docker push ${url}/fond-of-spryker/yves:1.13.8
 
 docker build --build-arg APPLICATION=zed -t ${url}/fond-of-spryker/zed:1.13.8 ${nginxPrefix}nginx/ --no-cache
-#docker push ${url}/fond-of-spryker/zed:1.13.8
+docker push ${url}/fond-of-spryker/zed:1.13.8
 
 docker build -t ${url}/fond-of-spryker/php-fpm:7.1 php-fpm/ --no-cache
-#docker push ${url}/fond-of-spryker/php-fpm:7.1
+docker push ${url}/fond-of-spryker/php-fpm:7.1
 
 docker build -t ${url}/fond-of-spryker/php-fpm:7.1-jenkins php-fpm/dev-and-jenkins/ --file php-fpm/dev-and-jenkins/Dockerfile.jenkins --no-cache
-#docker push ${url}/fond-of-spryker/php-fpm:7.1-jenkins
+docker push ${url}/fond-of-spryker/php-fpm:7.1-jenkins
 
 docker build -t ${url}/fond-of-spryker/php-fpm:7.1-dev php-fpm/dev-and-jenkins/ --file php-fpm/dev-and-jenkins/Dockerfile.dev --no-cache
-#docker push ${url}/fond-of-spryker/php-fpm:7.1-dev
+docker push ${url}/fond-of-spryker/php-fpm:7.1-dev
 
 docker build -t ${url}/fond-of-spryker/php-fpm:7.1-xdebug php-fpm/xdebug/ --no-cache
-#docker push ${url}/fond-of-spryker/php-fpm:7.1-xdebug
+docker push ${url}/fond-of-spryker/php-fpm:7.1-xdebug
