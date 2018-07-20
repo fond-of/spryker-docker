@@ -6,6 +6,7 @@ map ${ESC}http_host ${ESC}application_env {
 
 map ${ESC}http_host ${ESC}application_store {
     ~*zed\..*\.domain\.com DOMAIN;
+    ~*zed\.domain\.com DOMAIN;
 }
 
 server {
@@ -18,11 +19,11 @@ server {
     # Redirect http to https
     # set ${ESC}can_redirect_to_https '';
     #
-    # if (${ESC}host !~ ^dev\.) {
+    # if (${ESC}host !~ ^zed\.dev\.) {
     #     set ${ESC}can_redirect_to_https 1;
     # }
     #
-    # if (${ESC}host !~ ^stag(e|ing)\.) {
+    # if (${ESC}host !~ ^zed\.stag(e|ing)\.) {
     #     set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
     # }
     #
