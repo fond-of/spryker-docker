@@ -79,6 +79,7 @@ RUN mkdir -p /data; \
     chown www-data:www-data /data -R; \
     chown www-data:www-data /var/www/ -R;
 
+COPY check-jenkins-jobs-count.sh /usr/local/bin/
 COPY connect-to-jenkins-master.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 

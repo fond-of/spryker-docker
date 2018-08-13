@@ -23,14 +23,14 @@ if [ ! -f "${PATH_TO_JENKINS_SLAVE}" ]; then
     curl -s ${JENKINS_URL}/jnlpJars/slave.jar -o ${PATH_TO_JENKINS_SLAVE}
 fi
 
-(java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} get-node ${JENKINS_SLAVE_NAME} 2>&1 || true ) > /tmp/jenkins.node
+(/usr/bin/java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} get-node ${JENKINS_SLAVE_NAME} 2>&1 || true ) > /tmp/jenkins.node
 if grep ERROR: /tmp/jenkins.node >/dev/null; then
-    cat <<EOF | java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} create-node ${JENKINS_SLAVE_NAME}
+    cat <<EOF | /usr/bin/java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} create-node ${JENKINS_SLAVE_NAME}
         <slave>
             <name>backend</name>
             <description></description>
             <remoteFS>/data/shop</remoteFS>
-            <numExecutors>1</numExecutors>
+            <numExecutors>3</numExecutors>
             <mode>NORMAL</mode>
             <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
             <launcher class="hudson.slaves.JNLPLauncher"/>
@@ -41,4 +41,5 @@ EOF
 fi
 
 /usr/bin/java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} offline-node ""
+supervisorctl start check_jenkins_jobs_count
 supervisorctl start jenkins_slave
