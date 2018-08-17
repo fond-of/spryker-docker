@@ -65,3 +65,6 @@ docker push ${url}/fond-of-spryker/php-fpm:7.1-dev
 
 docker build -t ${url}/fond-of-spryker/php-fpm:7.1-xdebug php-fpm/xdebug/ --no-cache
 docker push ${url}/fond-of-spryker/php-fpm:7.1-xdebug
+
+docker build -t ${url}/fond-of-spryker/php-cli:7.1 php-cli/ --no-cache
+docker push ${url}/fond-of-spryker/php-cli:7.1

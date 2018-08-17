@@ -1,6 +1,6 @@
 FROM php:7.1-fpm-jessie
 
-MAINTAINER Daniel Rose <daniel.rose@fondof.de>
+MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
 ENV TERM xterm
 
