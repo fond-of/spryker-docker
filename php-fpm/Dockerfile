@@ -53,7 +53,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -; \
 
 # required list of php ext
 RUN docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
-    docker-php-ext-install bcmath bz2 curl gd gmp intl mbstring mcrypt opcache pdo pdo_pgsql pgsql xml zip
+    docker-php-ext-install bcmath bz2 curl gd gmp intl mbstring mcrypt opcache pdo pdo_pgsql pgsql sockets xml zip
 
 # redis
 RUN pecl install redis-3.1.6; \
