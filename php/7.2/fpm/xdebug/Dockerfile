@@ -1,4 +1,7 @@
-FROM 493499581187.dkr.ecr.eu-central-1.amazonaws.com/fond-of-spryker/php-fpm:7.1-dev
+ARG FROM_REGISTRY
+ARG FROM_IMAGE_NAME
+
+FROM $FROM_REGISTRY/$FROM_IMAGE_NAME:7.2-dev
 
 MAINTAINER Daniel Rose <daniel.rose@fondof.de>
 

@@ -1,0 +1,14 @@
+ARG FROM_REGISTRY
+ARG FROM_IMAGE_NAME
+
+FROM $FROM_REGISTRY/$FROM_IMAGE_NAME:7.2
+
+MAINTAINER Daniel Rose <daniel-rose@gmx.de>
+
+RUN set -ex
+
+COPY supervisord.conf /etc/supervisor/conf.d/jenkins-slave.conf
+
+ENTRYPOINT []
+
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
