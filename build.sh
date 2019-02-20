@@ -44,7 +44,6 @@ if promptYN "Do you use private-nginx?"; then
     nginxPrefix="private-"
 fi
 
-
 docker build --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:1.13.8 ${nginxPrefix}nginx/ --no-cache
 docker push ${url}/fond-of-spryker/glue:1.13.8
 
