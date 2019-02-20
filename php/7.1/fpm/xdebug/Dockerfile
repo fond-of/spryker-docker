@@ -12,3 +12,5 @@ RUN pecl install xdebug-2.6.0; \
     docker-php-ext-enable xdebug
 
 COPY php.ini /usr/local/etc/php/php.ini
+
+RUN rm /etc/supervisor/conf.d/jenkins-slave.conf
