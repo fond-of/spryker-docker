@@ -66,30 +66,30 @@ if promptYN "Do you to build nginx images with xdebug support?"; then
     docker push ${url}/fond-of-spryker/zed:1.13.8-${suffix}
 fi
 
-#versions=("7.1" "7.2")
-#
-#for version in "${versions[@]}"
-#do
-#    imageName="fond-of-spryker/php-fpm"
-#    docker build -t ${url}/${imageName}:${version} php/${version}/fpm --no-cache
-#    docker push ${url}/${imageName}:${version}
-#
-#    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-jenkins php/${version}/fpm/dev-and-jenkins/ --file php/${version}/fpm/dev-and-jenkins/Dockerfile.jenkins --no-cache
-#    docker push ${url}/${imageName}:${version}-jenkins
-#
-#    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-dev php/${version}/fpm/dev-and-jenkins/ --file php/${version}/fpm/dev-and-jenkins/Dockerfile.dev --no-cache
-#    docker push ${url}/${imageName}:${version}-dev
-#
-#    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-xdebug php/${version}/fpm/xdebug/ --no-cache
-#    docker push ${url}/${imageName}:${version}-xdebug
-#
-#    imageName="fond-of-spryker/php-cli"
-#    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version} php/${version}/cli --no-cache
-#    docker push ${url}/${imageName}:${version}
-#
-#    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-dev php/${version}/cli/dev --no-cache
-#    docker push ${url}/${imageName}:${version}-dev
-#
-#    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-xdebug php/${version}/cli/xdebug --no-cache
-#    docker push ${url}/${imageName}:${version}-xdebug
-#done
+versions=("7.1" "7.2")
+
+for version in "${versions[@]}"
+do
+    imageName="fond-of-spryker/php-fpm"
+    docker build -t ${url}/${imageName}:${version} php/${version}/fpm --no-cache
+    docker push ${url}/${imageName}:${version}
+
+    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-jenkins php/${version}/fpm/dev-and-jenkins/ --file php/${version}/fpm/dev-and-jenkins/Dockerfile.jenkins --no-cache
+    docker push ${url}/${imageName}:${version}-jenkins
+
+    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-dev php/${version}/fpm/dev-and-jenkins/ --file php/${version}/fpm/dev-and-jenkins/Dockerfile.dev --no-cache
+    docker push ${url}/${imageName}:${version}-dev
+
+    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-xdebug php/${version}/fpm/xdebug/ --no-cache
+    docker push ${url}/${imageName}:${version}-xdebug
+
+    imageName="fond-of-spryker/php-cli"
+    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version} php/${version}/cli --no-cache
+    docker push ${url}/${imageName}:${version}
+
+    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-dev php/${version}/cli/dev --no-cache
+    docker push ${url}/${imageName}:${version}-dev
+
+    docker build --build-arg FROM_REGISTRY=${url} --build-arg FROM_IMAGE_NAME=${imageName} -t ${url}/${imageName}:${version}-xdebug php/${version}/cli/xdebug --no-cache
+    docker push ${url}/${imageName}:${version}-xdebug
+done
