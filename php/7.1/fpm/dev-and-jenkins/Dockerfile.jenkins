@@ -8,7 +8,6 @@ MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 RUN set -ex
 
 COPY supervisord.conf /etc/supervisor/conf.d/jenkins-slave.conf
-
-ENTRYPOINT []
+COPY docker-entrypoint.sh /usr/local/bin/
 
 CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]

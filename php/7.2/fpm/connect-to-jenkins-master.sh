@@ -4,8 +4,6 @@ set -e
 PATH_TO_JENKINS_CLI="/usr/local/bin/jenkins-cli.jar"
 PATH_TO_JENKINS_SLAVE="/usr/local/bin/jenkins-slave.jar"
 
-JENKINS_SLAVE_NAME="zed-worker"
-
 waitForHttpService() {
   url=$1; shift
   until curl -s -k ${url} -o /dev/null -L --fail $*; do

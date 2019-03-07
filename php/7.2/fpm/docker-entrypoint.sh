@@ -12,6 +12,10 @@ fi
 
 set -e
 
+IP=$(hostname -i)
+IP_WITHOUT_DOTS=$(echo ${IP} | sed 's/\.//g')
+export JENKINS_SLAVE_NAME="zed-worker-${IP_WITHOUT_DOTS}"
+
 /usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf
 
 if [ -d "${PATH_TO_SPRYKER}public" ] && [ ! -L "/var/www/html" ]; then
