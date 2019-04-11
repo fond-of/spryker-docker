@@ -1,0 +1,212 @@
+version: '3'
+
+services:
+  nginx-yves:
+    image: "${REGISTRY_URL}/fond-of-spryker/yves:1.13.8-xdebug"
+    ports:
+      - 80
+    links:
+      - php
+      - php-xdebug
+    volumes:
+      - nfsmount_spryker_name:/var/www/spryker/releases/current
+
+    environment:
+      VIRTUAL_HOST: dev.domain.com
+    network_mode: bridge
+
+  nginx-glue:
+    image: "${REGISTRY_URL}/fond-of-spryker/glue:1.13.8-xdebug"
+    ports:
+      - 80
+    links:
+      - php
+      - php-xdebug
+    volumes:
+      - nfsmount_spryker_name:/var/www/spryker/releases/current
+    environment:
+      VIRTUAL_HOST: glue.dev.domain.com
+    network_mode: bridge
+
+  nginx-zed:
+    image: "${REGISTRY_URL}/fond-of-spryker/zed:1.13.8-xdebug"
+    ports:
+      - 80
+    links:
+      - php
+      - php-xdebug
+    volumes:
+      - nfsmount_spryker_name:/var/www/spryker/releases/current
+
+    environment:
+      VIRTUAL_HOST: zed.dev.domain.com
+    network_mode: bridge
+
+  php:
+    image: "${REGISTRY_URL}/fond-of-spryker/php-fpm:${PHP_VERSION}-dev"
+    ports:
+      - 9000
+    links:
+      - db
+      - elasticsearch
+      - rabbitmq
+      - redis
+      - jenkins
+      - mailcatcher
+    env_file:
+      - db.dev.env
+      - rabbitmq.dev.env
+    environment:
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_PORT: 9200
+      JENKINS_URL: "http://jenkins:8080/"
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_API_HOST: rabbitmq
+      RABBITMQ_API_PORT: 15672
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RECIPE_NAME: development
+    volumes:
+      - nfsmount_spryker_name:/var/www/spryker/releases/current
+      - nfsmount_spryker_name_composer:/root/.composer
+      - nfsmount_spryker_name_npm:/root/.npm
+    extra_hosts:
+      - "zed.dev.domain.com:${EXTRA_HOST_IP}"
+      - "glue.dev.domain.com:${EXTRA_HOST_IP}"
+      - "dev.domain.com:${EXTRA_HOST_IP}"
+    network_mode: bridge
+
+  php-xdebug:
+    image: "${REGISTRY_URL}/fond-of-spryker/php-fpm:${PHP_VERSION}-xdebug"
+    ports:
+      - 9000
+    links:
+      - db
+      - elasticsearch
+      - rabbitmq
+      - redis
+      - jenkins
+      - mailcatcher
+    env_file:
+      - db.dev.env
+      - rabbitmq.dev.env
+    environment:
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_PORT: 9200
+      JENKINS_URL: "http://jenkins:8080/"
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_API_HOST: rabbitmq
+      RABBITMQ_API_PORT: 15672
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RECIPE_NAME: development
+      XDEBUG_CONFIG: "remote_host=${EXTRA_HOST_IP}"
+    volumes:
+      - nfsmount_spryker_name:/var/www/spryker/releases/current
+      - nfsmount_spryker_name_composer:/root/.composer
+      - nfsmount_spryker_name_npm:/root/.npm
+    extra_hosts:
+      - "dev.domain.com:${EXTRA_HOST_IP}"
+      - "zed.dev.domain.com:${EXTRA_HOST_IP}"
+      - "glue.dev.domain.com:${EXTRA_HOST_IP}"
+    network_mode: bridge
+
+  db:
+    image: postgres:9.6
+    ports:
+        - 5432
+    env_file:
+      - db.dev.env
+    network_mode: bridge
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.9
+    ports:
+      - 9200
+    environment:
+      - xpack.security.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.graph.enabled=false
+      - xpack.watcher.enabled=false
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.zen.minimum_master_nodes=1
+      - discovery.type=single-node
+      - VIRTUAL_HOST=elasticsearch.dev.domain.com
+      - VIRTUAL_PORT=9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    network_mode: bridge
+
+  redis:
+    image: redis:2.8.23
+    ports:
+      - 6379
+    network_mode: bridge
+
+  rabbitmq:
+    image: rabbitmq:3.6.5-management
+    ports:
+      - 15672
+    env_file:
+      - rabbitmq.dev.env
+    environment:
+      VIRTUAL_HOST: rabbitmq.dev.domain.com
+      VIRTUAL_PORT: 15672
+    network_mode: bridge
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    environment:
+      JAVA_OPTS: '-Djenkins.install.runSetupWizard=false'
+      VIRTUAL_HOST: jenkins.dev.domain.com
+      VIRTUAL_PORT: 8080
+    ports:
+      - 8080
+      - 22
+    network_mode: bridge
+
+  mailcatcher:
+    image: "${REGISTRY_URL}/docker/mailcatcher:latest"
+    ports:
+      - 1080
+      - 1025
+    environment:
+      VIRTUAL_HOST: mailcatcher.dev.domain.com
+      VIRTUAL_PORT: 1080
+    network_mode: bridge
+
+volumes:
+  nfsmount_spryker_name:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,actimeo=2,nfsvers=3
+      device: ":${PATH_TO_PROJECT}"
+
+  nfsmount_spryker_name_composer:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,actimeo=2,nfsvers=3
+      device: ":${PATH_TO_COMPOSER}"
+
+  nfsmount_spryker_name_npm:
+      driver: local
+      driver_opts:
+        type: nfs
+        o: addr=host.docker.internal,rw,nolock,hard,nointr,actimeo=2,nfsvers=3
+        device: ":${PATH_TO_NPM}"

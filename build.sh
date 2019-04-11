@@ -38,6 +38,9 @@ else
     docker login --username ${username} --password ${password} ${url}
 fi
 
+docker build -t ${url}/fond-of-spryker/mailcatcher:1.0.0 mailcatcher/ --no-cache
+docker push ${url}/fond-of-spryker/mailcatcher:1.0.0
+
 nginxPrefix=""
 
 if promptYN "Do you use private-nginx?"; then
