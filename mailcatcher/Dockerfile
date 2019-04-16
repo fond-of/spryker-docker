@@ -3,7 +3,7 @@ FROM ruby:2.4
 MAINTAINER Daniel Rose <daniel.rose@fondofbags.com>
 
 RUN set -ex; \
-    gem install --no-ri --no-rdoc mailcatcher;
+    gem install --no-document mailcatcher;
 
 EXPOSE 1080 1025
 

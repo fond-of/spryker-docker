@@ -1,7 +1,4 @@
-ARG FROM_REGISTRY
-ARG FROM_IMAGE_NAME
-
-FROM $FROM_REGISTRY/$FROM_IMAGE_NAME:7.1
+FROM php:7.1-cli-stretch
 
 MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
