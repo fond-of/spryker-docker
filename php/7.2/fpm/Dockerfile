@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-stretch
+FROM php:7.2-fpm-buster
 
 MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
@@ -40,7 +40,7 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen; \
     locale-gen
 
 # postgresql-client
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
 RUN apt-get update; \
@@ -53,7 +53,7 @@ RUN apt-get update; \
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true;
 
 # jre8
-RUN apt-get install -y openjdk-8-jre
+RUN apt-get install -y openjdk-11-jre
 
 # nodejs
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -; \
@@ -84,7 +84,7 @@ RUN composer self-update
 COPY php.ini /usr/local/etc/php/php.ini
 
 # supervisor
-RUN easy_install supervisor; \
+RUN pip install supervisor; \
     mkdir -p /etc/supervisor/conf.d; \
     echo_supervisord_conf > /etc/supervisor/supervisord.conf; \
     echo "[include]" >> /etc/supervisor/supervisord.conf; \

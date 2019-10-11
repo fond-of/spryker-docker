@@ -20,11 +20,18 @@ if promptYN "Do you use docker-machine?"; then
 fi
 
 if promptYN "Do you use Amazon ECR?"; then
+    additionalArguments=""
     echo "Please enter the following information!"
+
+    read -p "Profile: " profile
+    if [ ! -z ${profile} ]; then
+      additionalArguments="${additionalArguments} --profile ${profile}"
+    fi
 
     read -p "Region: " region
     region="${region:-eu-central-1}"
-    eval $(aws ecr get-login --no-include-email --region ${region})
+
+    eval $(aws ecr get-login --no-include-email --region ${region}${additionalArguments})
 
     read -p "URL: " url
     url="${url:-493499581187.dkr.ecr.eu-central-1.amazonaws.com}"
