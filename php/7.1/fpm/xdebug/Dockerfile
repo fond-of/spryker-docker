@@ -8,7 +8,7 @@ MAINTAINER Daniel Rose <daniel.rose@fondof.de>
 RUN set -ex
 
 # XDEBUG
-RUN pecl install xdebug-2.6.0; \
+RUN pecl install xdebug; \
     docker-php-ext-enable xdebug
 
 COPY php.ini /usr/local/etc/php/php.ini
