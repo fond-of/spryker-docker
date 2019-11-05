@@ -87,6 +87,7 @@ RUN composer global require hirak/prestissimo; \
     composer self-update
 
 COPY php.ini /usr/local/etc/php/php.ini
+COPY log-docker.conf /usr/local/etc/php-fpm.d/log-docker.conf
 
 RUN pip install supervisor; \
     mkdir -p /etc/supervisor/conf.d; \
@@ -100,6 +101,7 @@ RUN mkdir -p /data; \
     chown www-data:www-data /var/www/ -R;
 
 COPY check-jenkins-jobs-count.sh /usr/local/bin/
+COPY check-jenkins-node.sh /usr/local/bin/
 COPY connect-to-jenkins-master.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
 

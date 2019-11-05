@@ -74,7 +74,7 @@ server {
         }
         add_header X-Server ${ESC}hostname;
         add_header X-Info disabled_htaccess;
-        fastcgi_pass php:9000;
+        fastcgi_pass php-fpm;
         fastcgi_index index.php;
         include /etc/nginx/fastcgi_params;
         fastcgi_param SCRIPT_NAME /index.php;
@@ -111,7 +111,7 @@ server {
         }
 
         add_header X-Server ${ESC}hostname;
-        fastcgi_pass php:9000;
+        fastcgi_pass php-fpm;
         fastcgi_index index.php;
         include /etc/nginx/fastcgi_params;
         fastcgi_param SCRIPT_NAME /index.php;

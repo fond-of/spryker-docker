@@ -62,7 +62,7 @@ server {
     location /payone/ {
         auth_basic off;
         add_header X-Server ${ESC}hostname;
-        fastcgi_pass php:9000;
+        fastcgi_pass php-fpm;
         fastcgi_index index.php;
         include /etc/nginx/fastcgi_params;
         fastcgi_param SCRIPT_NAME /index.php;
@@ -75,7 +75,7 @@ server {
     # PHP application gets all other requests
     location / {
         add_header X-Server ${ESC}hostname;
-        fastcgi_pass php:9000;
+        fastcgi_pass php-fpm;
         fastcgi_index index.php;
         include /etc/nginx/fastcgi_params;
         fastcgi_param SCRIPT_NAME /index.php;

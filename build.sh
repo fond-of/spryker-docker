@@ -54,27 +54,32 @@ if promptYN "Do you use private-nginx?"; then
     nginxPrefix="private-"
 fi
 
-docker build --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:1.13.8 ${nginxPrefix}nginx/ --no-cache
-docker push ${url}/fond-of-spryker/glue:1.13.8
+versions=("1.16.1")
 
-docker build --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:1.13.8 ${nginxPrefix}nginx/ --no-cache
-docker push ${url}/fond-of-spryker/yves:1.13.8
+for version in "${versions[@]}"
+do
+  docker build --build-arg NGINX_VERSION=1.16.1 --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:${version} ${nginxPrefix}nginx/ --no-cache
+  docker push ${url}/fond-of-spryker/glue:${version}
 
-docker build --build-arg APPLICATION=zed -t ${url}/fond-of-spryker/zed:1.13.8 ${nginxPrefix}nginx/ --no-cache
-docker push ${url}/fond-of-spryker/zed:1.13.8
+  docker build --build-arg NGINX_VERSION=1.16.1 --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:${version} ${nginxPrefix}nginx/ --no-cache
+  docker push ${url}/fond-of-spryker/yves:${version}
 
-if promptYN "Do you to build nginx images with xdebug support?"; then
-    suffix="xdebug"
+  docker build --build-arg NGINX_VERSION=1.16.1 --build-arg APPLICATION=zed -t ${url}/fond-of-spryker/zed:${version} ${nginxPrefix}nginx/ --no-cache
+  docker push ${url}/fond-of-spryker/zed:${version}
 
-    docker build --build-arg APPLICATION_SUFFIX=${suffix} --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:1.13.8-${suffix} ${nginxPrefix}nginx/ --no-cache
-    docker push ${url}/fond-of-spryker/glue:1.13.8-${suffix}
+  if promptYN "Do you to build nginx images with xdebug support?"; then
+      suffix="xdebug"
 
-    docker build --build-arg APPLICATION_SUFFIX=${suffix} --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:1.13.8-${suffix} ${nginxPrefix}nginx/ --no-cache
-    docker push ${url}/fond-of-spryker/yves:1.13.8-${suffix}
+      docker build --build-arg NGINX_VERSION=1.16.1 --build-arg APPLICATION_SUFFIX=${suffix} --build-arg APPLICATION=glue -t ${url}/fond-of-spryker/glue:${version}-${suffix} ${nginxPrefix}nginx/ --no-cache
+      docker push ${url}/fond-of-spryker/glue:${version}-${suffix}
 
-    docker build --build-arg APPLICATION_SUFFIX=${suffix} --build-arg APPLICATION=zed -t ${url}/fond-of-spryker/zed:1.13.8-${suffix} ${nginxPrefix}nginx/ --no-cache
-    docker push ${url}/fond-of-spryker/zed:1.13.8-${suffix}
-fi
+      docker build --build-arg NGINX_VERSION=1.16.1 --build-arg APPLICATION_SUFFIX=${suffix} --build-arg APPLICATION=yves -t ${url}/fond-of-spryker/yves:${version}-${suffix} ${nginxPrefix}nginx/ --no-cache
+      docker push ${url}/fond-of-spryker/yves:${version}-${suffix}
+
+      docker build --build-arg NGINX_VERSION=1.16.1 --build-arg APPLICATION_SUFFIX=${suffix} --build-arg APPLICATION=zed -t ${url}/fond-of-spryker/zed:${version}-${suffix} ${nginxPrefix}nginx/ --no-cache
+      docker push ${url}/fond-of-spryker/zed:${version}-${suffix}
+  fi
+done
 
 versions=("7.1" "7.2")
 
