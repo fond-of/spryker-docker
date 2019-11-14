@@ -1,6 +1,6 @@
 .idea
 .DS_Store
 
-nginx/*.template
-nginx/*.htpasswd
-private-nginx
+nginx/conf.d
+
+logs

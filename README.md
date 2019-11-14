@@ -3,13 +3,11 @@
 
 # Building Images
 Steps before building image:
-1. Copy the following files and remove extension .dist
+1. Copy the following directory and remove extension .dist
     ```
-    $ cp ./nginx/glue.template.dist ./nginx/glue.template
-    $ cp ./nginx/yves.template.dist ./nginx/yves.template
-    $ cp ./nginx/zed.template.dist ./nginx/zed.template
+    $ cp ./nginx/conf.d.dist ./nginx/conf.d
     ```
-2. Prepare copied files
+2. Prepare files in copied directory
     - yves.templae
         ```
         ...
@@ -42,11 +40,21 @@ Steps before building image:
         }
         ...
         ```
-After these steps have been completed, run the following command:
-    ```
-    $ chmod +x build.sh
-    $ ./build.sh
-    ```
+After these steps have been completed, run the following command for building the docker images:
+```
+$ make buildAllImages REGISTRY_HOSTNAME=YOUR_REGISTRY_HOSTNAME \
+NGINX_IMAGE_NAME=YOUR_NGINX_IMAGE_NAME \
+PHP_IMAGE_NAME=YOUR_PHP_NGINX_IMAGE_NAME \
+MAILCATCHER_IMAGE_NAME=YOUR_MAILCATCHER_IMAGE_NAME
+```
+
+If you want to push the built docker images, please run the following command:
+```
+$ make pushAllImages REGISTRY_HOSTNAME=YOUR_REGISTRY_HOSTNAME \
+NGINX_IMAGE_NAME=YOUR_NGINX_IMAGE_NAME \
+PHP_IMAGE_NAME=YOUR_PHP_NGINX_IMAGE_NAME \
+MAILCATCHER_IMAGE_NAME=YOUR_MAILCATCHER_IMAGE_NAME
+```
 
 # Docker Compose (only for OXS now)
 Steps before using Docker Compose:
@@ -69,14 +77,14 @@ Steps before using Docker Compose:
     ```
 7. Add entries to host file
     ```
-    DOCKER_HOST_IP      dev.domain.com
-    DOCKER_HOST_IP      glue.dev.domain.com
-    DOCKER_HOST_IP      zed.dev.domain.com
-    DOCKER_HOST_IP      jenkins.dev.domain.com
-    DOCKER_HOST_IP      rabbitmq.dev.domain.com
-    DOCKER_HOST_IP      elasticsearch.dev.domain.com
+    DOCKER_HOST_IP      dev.XXX.com
+    DOCKER_HOST_IP      glue.dev.XXX.com
+    DOCKER_HOST_IP      zed.dev.XXX.com
+    DOCKER_HOST_IP      jenkins.dev.XXX.com
+    DOCKER_HOST_IP      rabbitmq.dev.XXX.com
+    DOCKER_HOST_IP      elasticsearch.dev.XXX.com
     ```
 After these steps have been completed, run the following command in the spryker project dir:
-    ```
-    $ docker-compose up
-    ```
+```
+$ docker-compose up -d
+```

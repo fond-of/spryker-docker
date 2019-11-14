@@ -1,0 +1,73 @@
+map ${ESC}http_host ${ESC}application_env {
+    ~*glue\.dev\..* development;
+    ~*glue\.stag(e|ing)\..* staging;
+    ~*glue\..* production;
+}
+
+map ${ESC}http_host ${ESC}application_store {
+    ~*glue\..*\.domain\.com DOMAIN;
+    ~*glue\.domain\.com DOMAIN;
+}
+
+map ${ESC}cookie_XDEBUG_SESSION ${ESC}xdebug_enabled {
+    default 0;
+    PHPSTORM 1;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+    keepalive_timeout 0;
+
+    root /var/www/spryker/releases/current/public/Glue;
+
+    # Redirect http to https
+    # set ${ESC}can_redirect_to_https '';
+
+    # if (${ESC}host !~ ^glue\.dev\.) {
+    #    set ${ESC}can_redirect_to_https 1;
+    # }
+
+    # if (${ESC}http_x_forwarded_proto = 'http') {
+    #     set ${ESC}can_redirect_to_https '${ESC}{can_redirect_to_https}1';
+    # }
+
+    # if (${ESC}can_redirect_to_https = 11) {
+    #     return 301 https://${ESC}host${ESC}request_uri;
+    # }
+
+    ###
+    ### Common Glue settings (to be included in vhost definition)
+    ### This file is maintained by salt
+    ###
+
+    # Timeout for Glue requests - 10 minutes
+    # (longer requests should be converted to jobs and executed via jenkins)
+    proxy_read_timeout 600s;
+    proxy_send_timeout 600s;
+    fastcgi_read_timeout 600s;
+    client_body_timeout 600s;
+    client_header_timeout 600s;
+    send_timeout 600s;
+
+    # PHP application gets all other requests
+    location / {
+        add_header X-Server ${ESC}hostname;
+
+        if (${ESC}xdebug_enabled = 1) {
+            fastcgi_pass php-fpm-xdebug;
+        }
+
+        if (${ESC}xdebug_enabled = 0) {
+            fastcgi_pass php-fpm;
+        }
+
+        fastcgi_index index.php;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param SCRIPT_NAME /index.php;
+        fastcgi_param APPLICATION_ENV ${ESC}application_env;
+        fastcgi_param APPLICATION_STORE ${ESC}application_store;
+        fastcgi_param SCRIPT_FILENAME  ${ESC}document_root/index.php;
+        #more_clear_headers 'X-Powered-By' 'X-Store' 'X-Locale' 'X-Env' 'Server';
+    }
+}

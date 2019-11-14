@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx-yves:
-    image: "${REGISTRY_URL}/fond-of-spryker/yves:1.13.8-xdebug"
+    image: "${REGISTRY_URL}/fond-of-spryker/nginx:1.16-yves-xdebug"
     ports:
       - 80
     links:
@@ -16,7 +16,7 @@ services:
     network_mode: bridge
 
   nginx-glue:
-    image: "${REGISTRY_URL}/fond-of-spryker/glue:1.13.8-xdebug"
+    image: "${REGISTRY_URL}/fond-of-spryker/nginx:1.16-glue-xdebug"
     ports:
       - 80
     links:
@@ -29,7 +29,7 @@ services:
     network_mode: bridge
 
   nginx-zed:
-    image: "${REGISTRY_URL}/fond-of-spryker/zed:1.13.8-xdebug"
+    image: "${REGISTRY_URL}/fond-of-spryker/nginx:1.16-zed-xdebug"
     ports:
       - 80
     links:
@@ -43,7 +43,7 @@ services:
     network_mode: bridge
 
   php:
-    image: "${REGISTRY_URL}/fond-of-spryker/php-fpm:${PHP_VERSION}-dev"
+    image: "${REGISTRY_URL}/fond-of-spryker/php:${PHP_VERSION}-fpm-dev"
     ports:
       - 9000
     links:
@@ -74,13 +74,13 @@ services:
       - nfsmount_spryker_name_composer:/root/.composer
       - nfsmount_spryker_name_npm:/root/.npm
     extra_hosts:
-      - "zed.dev.domain.com:${EXTRA_HOST_IP}"
-      - "glue.dev.domain.com:${EXTRA_HOST_IP}"
-      - "dev.domain.com:${EXTRA_HOST_IP}"
+      - "zed.dev.XXX.com:${EXTRA_HOST_IP}"
+      - "glue.dev.XXX.com:${EXTRA_HOST_IP}"
+      - "dev.XXX.com:${EXTRA_HOST_IP}"
     network_mode: bridge
 
   php-xdebug:
-    image: "${REGISTRY_URL}/fond-of-spryker/php-fpm:${PHP_VERSION}-xdebug"
+    image: "${REGISTRY_URL}/fond-of-spryker/php:${PHP_VERSION}-fpm-xdebug"
     ports:
       - 9000
     links:
@@ -112,9 +112,9 @@ services:
       - nfsmount_spryker_name_composer:/root/.composer
       - nfsmount_spryker_name_npm:/root/.npm
     extra_hosts:
-      - "dev.domain.com:${EXTRA_HOST_IP}"
-      - "zed.dev.domain.com:${EXTRA_HOST_IP}"
-      - "glue.dev.domain.com:${EXTRA_HOST_IP}"
+      - "dev.XXX.com:${EXTRA_HOST_IP}"
+      - "zed.XXX.domain.com:${EXTRA_HOST_IP}"
+      - "glue.XXX.domain.com:${EXTRA_HOST_IP}"
     network_mode: bridge
 
   db:
@@ -180,7 +180,7 @@ services:
     network_mode: bridge
 
   mailcatcher:
-    image: "${REGISTRY_URL}/docker/mailcatcher:latest"
+    image: "${REGISTRY_URL}/fond-of-spryker/mailcatcher:1.0.0"
     ports:
       - 1080
       - 1025
