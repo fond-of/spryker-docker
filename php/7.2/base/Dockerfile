@@ -12,7 +12,7 @@ RUN echo 'Acquire::http::Pipeline-Depth "0";' > /etc/apt/apt.conf.d/99fixbadprox
 
 RUN apt-get clean; \
     apt-get update; \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         git \
         wget \
         gnupg2 \
@@ -46,7 +46,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" >> /etc
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
 RUN apt-get update; \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         postgresql-client-9.6 \
         libpq5 \
         libpq-dev
@@ -56,7 +56,7 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 
 # nodejs
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -; \
-    apt-get install -y nodejs; \
+    apt-get install -y --no-install-recommends nodejs; \
     npm install --global yarn; \
     rm -rf /var/lib/apt/lists/*
 

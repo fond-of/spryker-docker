@@ -9,7 +9,7 @@ RUN set -ex
 
 RUN apt-get clean; \
     apt-get update; \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         ruby \
         ruby-dev \
         build-essential \

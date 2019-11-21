@@ -9,7 +9,7 @@ RUN set -ex
 
 RUN apt-get clean; \
     apt-get update; \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         ruby \
         ruby-dev \
         build-essential \
@@ -25,7 +25,7 @@ RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | a
 RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 
 RUN apt-get update; \
-    apt-get install -y adoptopenjdk-8-hotspot-jre
+    apt-get install -y --no-install-recommends adoptopenjdk-8-hotspot-jre
 
 # supervisor
 RUN pip install supervisor; \
