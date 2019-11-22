@@ -15,6 +15,7 @@ RUN apt-get clean; \
         build-essential \
         libsqlite3-dev \
         python-pip \
+        python-pkg-resources \
         software-properties-common
 
 # mailcatcher client
@@ -35,6 +36,10 @@ RUN pip install supervisor; \
     echo "files = /etc/supervisor/conf.d/*.conf" >> /etc/supervisor/supervisord.conf;
 
 COPY ./conf.d/base/supervisor/jenkins-slave.conf /etc/supervisor/conf.d/jenkins-slave.conf
+
+COPY ./check-jenkins-jobs-count.sh /usr/local/bin/
+COPY ./check-jenkins-node.sh /usr/local/bin/
+COPY ./connect-to-jenkins-master.sh /usr/local/bin/
 
 RUN mv /usr/local/etc/php/php.ini /usr/local/etc/php/php.ini.bkp; \
     mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
