@@ -55,6 +55,7 @@ buildImages:
   $(call buildImage,cli,production)
 
   $(call buildImage,jenkins-slave,base)
+	$(call buildImage,jenkins-slave,production)
 
 pushImages:
   $(call pushImage,fpm,base)
@@ -68,3 +69,4 @@ pushImages:
   $(call pushImage,cli,production)
 
   $(call pushImage,jenkins-slave,base)
+	$(call pushImage,jenkins-slave,production)
