@@ -1,7 +1,7 @@
 ARG REGISTRY
 ARG IMAGE_NAME
 
-FROM $REGISTRY/$IMAGE_NAME:7.3-cli
+FROM $REGISTRY/$IMAGE_NAME:7.2-fpm
 
 ARG NEW_RELIC_AGENT_VERSION=9.3.0.248
 
@@ -24,4 +24,4 @@ RUN sed -i -e 's/\"REPLACE_WITH_REAL_KEY\"/\${NEW_RELIC_LICENSE_KEY}/' \
   -e 's/\;newrelic.daemon.dont_launch\s=\s.*/newrelic.daemon.dont_launch=3'/ \
   /usr/local/etc/php/conf.d/newrelic.ini
 
-COPY ./docker-entrypoint/production/cli.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker-entrypoint/production/fpm.sh /usr/local/bin/docker-entrypoint.sh
