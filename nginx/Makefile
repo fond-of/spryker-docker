@@ -36,6 +36,7 @@ define pushImage
 		docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG > $(BASE_DIRECTORY)/../logs/push/nginx/$(NGINX_VERSION)/$(1)-$(2).log; exit 0')
 endef
 
+.PHONY: buildImages
 buildImages:
 	$(call buildImage,yves,base)
 	$(call buildImage,glue,base)
@@ -45,6 +46,7 @@ buildImages:
 	$(call buildImage,glue,xdebug)
 	$(call buildImage,zed,xdebug)
 
+.PHONY: pushImages
 pushImages:
 	$(call pushImage,yves,base)
 	$(call pushImage,glue,base)
