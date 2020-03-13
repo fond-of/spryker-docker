@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 PATH_TO_JENKINS_CLI="/usr/local/bin/jenkins-cli.jar"
 PATH_TO_JENKINS_SLAVE="/usr/local/bin/jenkins-slave.jar"

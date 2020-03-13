@@ -1,6 +1,4 @@
 #!/bin/sh
-set -e
-
 PATH_TO_JENKINS_CLI="/usr/local/bin/jenkins-cli.jar"
 
 if [ ! -f "${PATH_TO_JENKINS_CLI}" ]; then
@@ -15,7 +13,7 @@ while true
 do
     echo "$(date '+%Y-%m-%d %H:%M:%S') Checking jobs count..."
 
-        if [ ${JOBS_COUNT} -eq 0 ] && [ ! -z ${RECIPE_NAME} ]; then
+    if [ ${JOBS_COUNT} -eq 0 ] && [ ! -z ${RECIPE_NAME} ]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') Creating jobs..."
 
         cd /var/www/spryker/releases/current
@@ -24,7 +22,3 @@ do
 
     sleep 60
 done
-
-echo "$(date '+%Y-%m-%d %H:%M:%S') Stopping..."
-
-exit 1
