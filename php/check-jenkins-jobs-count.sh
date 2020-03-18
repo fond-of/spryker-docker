@@ -5,7 +5,9 @@ if [ ! -f "${PATH_TO_JENKINS_CLI}" ]; then
     exit 1
 fi
 
-JOBS_COUNT=$(/usr/bin/java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} list-jobs | wc -l)
+jobs_count() {
+  /usr/bin/java -jar ${PATH_TO_JENKINS_CLI} -s ${JENKINS_URL} list-jobs | wc -l
+}
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') Starting..."
 
@@ -13,7 +15,9 @@ while true
 do
     echo "$(date '+%Y-%m-%d %H:%M:%S') Checking jobs count..."
 
-    if [ ${JOBS_COUNT} -eq 0 ] && [ ! -z ${RECIPE_NAME} ]; then
+    echo "Current jobs count: $(jobs_count)"
+
+    if [ $(jobs_count) -eq 0 ] && [ ! -z ${RECIPE_NAME} ]; then
         echo "$(date '+%Y-%m-%d %H:%M:%S') Creating jobs..."
 
         cd /var/www/spryker/releases/current
