@@ -1,22 +1,17 @@
 #!/bin/sh
-set -e
-
-PATH_TO_SPRYKER="/var/www/spryker/releases/current/"
-
 set +e
 
 which catchmail
 if [ $? -eq  0 ]; then
-    echo "sendmail_path = /usr/bin/env $(which catchmail) --smtp-ip $(getent hosts mailcatcher | awk '{ print $1 }') --smtp-port 1025 -f www-data@localhost" | tee /usr/local/etc/php/conf.d/docker-php-ext-mailcatcher.ini
+    export PATH_TO_CATCHMAIL=$(which catchmail)
+    export MAILCATCHER_IP=$(getent hosts mailcatcher | awk '{ print $1 }')
 fi
 
 set -e
 
-IP=$(hostname -i)
-IP_WITHOUT_DOTS=$(echo ${IP} | sed 's/\.//g')
-export JENKINS_SLAVE_NAME="zed-worker-${IP_WITHOUT_DOTS}"
+pm2 start /var/www/pm2/ecosystem.config.yml
 
-/usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf
+PATH_TO_SPRYKER="/var/www/spryker/releases/current/"
 
 if [ -d "${PATH_TO_SPRYKER}public" ] && [ ! -L "/var/www/html" ]; then
     rm -Rf /var/www/html

@@ -93,6 +93,11 @@ RUN chown www-data:www-data /var/www/ -R;
 
 COPY ./docker-entrypoint/base/fpm.sh /usr/local/bin/docker-entrypoint.sh
 
+USER www-data
+
+# oh my zsh
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true;
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["php-fpm"]

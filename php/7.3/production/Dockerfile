@@ -5,6 +5,8 @@ FROM $REGISTRY/$IMAGE_NAME:7.3-fpm
 
 ARG NEW_RELIC_AGENT_VERSION=9.3.0.248
 
+USER root
+
 RUN apt-get clean; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
@@ -25,3 +27,5 @@ RUN sed -i -e 's/\"REPLACE_WITH_REAL_KEY\"/\${NEW_RELIC_LICENSE_KEY}/' \
   /usr/local/etc/php/conf.d/newrelic.ini
 
 COPY ./docker-entrypoint/production/fpm.sh /usr/local/bin/docker-entrypoint.sh
+
+USER www-data

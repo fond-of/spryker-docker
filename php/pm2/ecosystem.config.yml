@@ -1,0 +1,6 @@
+apps:
+  - name: 'jenkins-slave-handler'
+    script: '/var/www/pm2/jenkins-slave-handler.js'
+  - name: 'jenkins-jobs-handler'
+    script: '/var/www/pm2/jenkins-jobs-handler.js'
+    cron_restart: '* * * * *'

@@ -5,6 +5,8 @@ FROM $REGISTRY/$IMAGE_NAME:7.2-cli
 
 MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
+USER root
+
 RUN set -ex
 
 RUN apt-get clean; \
@@ -17,8 +19,13 @@ RUN apt-get clean; \
 
 # mailcatcher client
 RUN gem install mailcatcher
+COPY ./ini/dev/php/mailcatcher.ini /usr/local/etc/php/conf.d/docker-php-ext-mailcatcher.ini
 
+# opcache
+COPY ./ini/dev/php/opcache.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-opcache.ini
+
+# dev-ini
 RUN mv /usr/local/etc/php/php.ini /usr/local/etc/php/php.ini.bkp; \
     mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
-COPY ./ini/dev/php/opcache.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-opcache.ini
+USER www-data

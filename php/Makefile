@@ -2,6 +2,7 @@ PHP_VERSION ?= 7.3
 REGISTRY_HOSTNAME ?= 493499581187.dkr.ecr.eu-central-1.amazonaws.com
 IMAGE_NAME ?= fond-of-spryker/php
 BASE_DIRECTORY ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+TEST_MODE ?= 1
 
 define buildImage
   $(shell sh -c '\
@@ -40,9 +41,17 @@ define pushImage
       mkdir -p  $(BASE_DIRECTORY)/../logs/push/php/$(PHP_VERSION);\
     fi;\
     \
-    docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG > $(BASE_DIRECTORY)/../logs/push/php/$(PHP_VERSION)/$(1)-$(2).log; exit 0')
+	if [ "$(2)" == "base" ] && [ "$(TEST_MODE)" == "1" ]; then\
+	  docker tag $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$${IMAGE_TAG}-staging > $(BASE_DIRECTORY)/../logs/push/php/$(PHP_VERSION)/$(1)-$(2).log;\
+	  docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$${IMAGE_TAG}-staging >> $(BASE_DIRECTORY)/../logs/push/php/$(PHP_VERSION)/$(1)-$(2).log;\
+	else\
+	  docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG > $(BASE_DIRECTORY)/../logs/push/php/$(PHP_VERSION)/$(1)-$(2).log;\
+	fi;\
+	\
+	exit 0')
 endef
 
+.PHONY: buildImages
 buildImages:
   $(call buildImage,fpm,base)
   $(call buildImage,fpm,dev)
@@ -57,6 +66,7 @@ buildImages:
   $(call buildImage,jenkins-slave,base)
   $(call buildImage,jenkins-slave,production)
 
+.PHONY: pushImages
 pushImages:
   $(call pushImage,fpm,base)
   $(call pushImage,fpm,dev)

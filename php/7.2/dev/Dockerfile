@@ -5,6 +5,8 @@ FROM $REGISTRY/$IMAGE_NAME:7.2-fpm
 
 MAINTAINER Daniel Rose <daniel-rose@gmx.de>
 
+USER root
+
 RUN set -ex
 
 RUN apt-get clean; \
@@ -14,36 +16,31 @@ RUN apt-get clean; \
         ruby-dev \
         build-essential \
         libsqlite3-dev \
-        python-pip \
-        python-pkg-resources \
         software-properties-common
 
 # mailcatcher client
 RUN gem install mailcatcher
+COPY ./ini/dev/php/mailcatcher.ini /usr/local/etc/php/conf.d/docker-php-ext-mailcatcher.ini
 
 # jre
-RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
-RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-
-RUN apt-get update; \
+RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -; \
+    add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/; \
+    apt-get update; \
     apt-get install -y --no-install-recommends adoptopenjdk-8-hotspot-jre
 
-# supervisor
-RUN pip install supervisor; \
-    mkdir -p /etc/supervisor/conf.d; \
-    echo_supervisord_conf > /etc/supervisor/supervisord.conf; \
-    echo "[include]" >> /etc/supervisor/supervisord.conf; \
-    echo "files = /etc/supervisor/conf.d/*.conf" >> /etc/supervisor/supervisord.conf;
+# opcache
+COPY ./ini/dev/php/opcache.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-opcache.ini
 
-COPY ./conf.d/base/supervisor/jenkins-slave.conf /etc/supervisor/conf.d/jenkins-slave.conf
-
-COPY ./check-jenkins-jobs-count.sh /usr/local/bin/
-COPY ./check-jenkins-node.sh /usr/local/bin/
-COPY ./connect-to-jenkins-master.sh /usr/local/bin/
-
+# dev-ini
 RUN mv /usr/local/etc/php/php.ini /usr/local/etc/php/php.ini.bkp; \
     mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
-COPY ./ini/dev/php/opcache.ini /usr/local/etc/php/conf.d/zzz-docker-php-ext-opcache.ini
+# pm2
+RUN npm install pm2 -g
 
 COPY docker-entrypoint/dev/fpm.sh /usr/local/bin/docker-entrypoint.sh
+
+USER www-data
+
+# pm2 scripts and config
+COPY ./pm2/* /var/www/pm2/

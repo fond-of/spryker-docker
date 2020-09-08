@@ -5,6 +5,7 @@ REGISTRY_HOSTNAME ?= 493499581187.dkr.ecr.eu-central-1.amazonaws.com
 PHP_IMAGE_NAME ?= fond-of-spryker/php
 NGINX_IMAGE_NAME ?= fond-of-spryker/nginx
 MAILCATCHER_IMAGE_NAME ?= fond-of-spryker/mailcatcher
+TEST_MODE ?= 1
 
 define buildPhpImagesForGivenVersion
 	$(shell make -s -f $(BASE_DIRECTORY)/php/Makefile PHP_VERSION=$(1) IMAGE_NAME=$(PHP_IMAGE_NAME) REGISTRY_HOSTNAME=$(REGISTRY_HOSTNAME) buildImages)
@@ -15,7 +16,7 @@ define buildNginxImagesForGivenVersion
 endef
 
 define pushPhpImagesForGivenVersion
-	$(shell make -s -f $(BASE_DIRECTORY)/php/Makefile PHP_VERSION=$(1) IMAGE_NAME=$(PHP_IMAGE_NAME) REGISTRY_HOSTNAME=$(REGISTRY_HOSTNAME) pushImages)
+	$(shell make -s -f $(BASE_DIRECTORY)/php/Makefile PHP_VERSION=$(1) IMAGE_NAME=$(PHP_IMAGE_NAME) TEST_MODE=$(TEST_MODE) REGISTRY_HOSTNAME=$(REGISTRY_HOSTNAME) pushImages)
 endef
 
 define pushNginxImagesForGivenVersion
