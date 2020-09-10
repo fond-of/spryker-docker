@@ -9,7 +9,7 @@ function startJenkinsSlave() {
         ['-Xms64m', '-Xmx128m', '-jar', config.pathToJenkinsSlaveJar, '-jnlpUrl', `${config.jenkinsUrl}computer/${config.jenkinsSlaveName}/slave-agent.jnlp`]
     );
 
-    if (spawnedChildProcess.stderr !== null) {
+    if (spawnedChildProcess.status !== 0) {
         console.error(Buffer.from(spawnedChildProcess.stderr).toString());
     }
 }
@@ -20,7 +20,7 @@ function createJenkinsNode() {
         ['-jar', config.pathToJenkinsCliJar, '-s', config.jenkinsUrl, 'get-node', config.jenkinsSlaveName]
     );
 
-    if (spawnedChildProcess.stderr !== null) {
+    if (spawnedChildProcess.status !== 0) {
         spawnedChildProcess = childProcess.spawnSync(
             '/usr/bin/java',
             ['-jar', config.pathToJenkinsCliJar, '-s', config.jenkinsUrl, 'create-node', config.jenkinsSlaveName],
@@ -28,22 +28,20 @@ function createJenkinsNode() {
                 input: config.nodeConfig
             }
         );
-
-        console.log(Buffer.from(spawnedChildProcess.stderr).toString());
     }
 
-    if (spawnedChildProcess.error !== undefined) {
-        console.error(spawnedChildProcess.error);
+    if (spawnedChildProcess.status !== 0) {
+        console.error(Buffer.from(spawnedChildProcess.stderr).toString());
         return;
     }
 
     spawnedChildProcess = childProcess.spawnSync(
         '/usr/bin/java',
-        ['-jar', config.pathToJenkinsCliJar, '-s', config.jenkinsUrl, 'offline-node', '""']
+        ['-jar', config.pathToJenkinsCliJar, '-s', config.jenkinsUrl, 'offline-node', '']
     );
 
-    if (spawnedChildProcess.error !== undefined) {
-        console.error(spawnedChildProcess.error);
+    if (spawnedChildProcess.status !== 0) {
+        console.error(Buffer.from(spawnedChildProcess.stderr).toString());
     }
 }
 
@@ -81,7 +79,7 @@ function pingJenkins() {
 
             resolve();
         }).on('error', (e) => {
-            console.error(`Got error: ${e.message}`);
+            console.error(e.message);
             reject();
         });
     });
@@ -95,7 +93,7 @@ function pingJenkins() {
             await pingJenkins()
             isJenkinsAlive = true;
         } catch (e) {
-            console.error(e);
+            console.error(e.message);
         }
 
     }
@@ -106,7 +104,3 @@ function pingJenkins() {
     createJenkinsNode();
     startJenkinsSlave();
 })();
-
-
-
-

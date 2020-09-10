@@ -27,17 +27,13 @@ http.get(config.jenkinsApiUrl, {
                 return;
             }
 
-            let prc = childProcess.execSync(`vendor/bin/install -r ${config.recipeName} -s jenkins-generate`, {
+            childProcess.execSync(`vendor/bin/install -r ${config.recipeName} -s jenkins-generate`, {
                 cwd: '/var/www/spryker/releases/current'
-            });
-
-            prc.on('close', function (code) {
-                console.log('process exit code ' + code);
             });
         } catch (e) {
             console.error(e.message);
         }
     });
 }).on('error', (e) => {
-    console.error(`Got error: ${e.message}`);
+    console.error(e.message);
 });

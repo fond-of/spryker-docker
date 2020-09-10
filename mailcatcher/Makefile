@@ -8,7 +8,10 @@ define buildImage
 			mkdir -p  $(BASE_DIRECTORY)/../logs/build/mailcatcher/1.0.0;\
 		fi;\
 		\
-		docker build -t $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):1.0.0 $(BASE_DIRECTORY) > $(BASE_DIRECTORY)/../logs/build/mailcatcher/1.0.0/base.log; exit 0')
+		docker build -t $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):1.0.0 $(BASE_DIRECTORY) > $(BASE_DIRECTORY)/../logs/build/mailcatcher/1.0.0/base.log;\
+		\
+		exit 0;\
+	')
 endef
 
 define pushImage
@@ -17,7 +20,10 @@ define pushImage
 			mkdir -p  $(BASE_DIRECTORY)/../logs/push/mailcatcher/1.0.0;\
 		fi;\
 		\
-		docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):1.0.0 > $(BASE_DIRECTORY)/../logs/push/mailcatcher/1.0.0/base.log; exit 0')
+		docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):1.0.0 > $(BASE_DIRECTORY)/../logs/push/mailcatcher/1.0.0/base.log;\
+		\
+		exit 0;\
+	')
 endef
 
 buildImages:

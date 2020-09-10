@@ -18,7 +18,10 @@ define buildImage
 			mkdir -p  $(BASE_DIRECTORY)/../logs/build/nginx/$(NGINX_VERSION);\
 		fi;\
 		\
-		docker build --build-arg APPLICATION=$(1) $$BUILD_ARGUMENTS-t $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY) > $(BASE_DIRECTORY)/../logs/build/nginx/$(NGINX_VERSION)/$(1)-$(2).log; exit 0')
+		docker build --build-arg APPLICATION=$(1) $$BUILD_ARGUMENTS-t $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG -f $$DOCKER_FILE $(BASE_DIRECTORY) > $(BASE_DIRECTORY)/../logs/build/nginx/$(NGINX_VERSION)/$(1)-$(2).log;\
+		\
+		exit 0;\
+	')
 endef
 
 define pushImage
@@ -33,7 +36,10 @@ define pushImage
 			mkdir -p  $(BASE_DIRECTORY)/../logs/push/nginx/$(NGINX_VERSION);\
 		fi;\
 		\
-		docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG > $(BASE_DIRECTORY)/../logs/push/nginx/$(NGINX_VERSION)/$(1)-$(2).log; exit 0')
+		docker push $(REGISTRY_HOSTNAME)/$(IMAGE_NAME):$$IMAGE_TAG > $(BASE_DIRECTORY)/../logs/push/nginx/$(NGINX_VERSION)/$(1)-$(2).log;\
+		\
+		exit 0;\
+	')
 endef
 
 .PHONY: buildImages

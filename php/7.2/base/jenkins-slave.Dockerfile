@@ -30,4 +30,4 @@ USER www-data
 # pm2 scripts and config
 COPY ./pm2/* /var/www/pm2/
 
-CMD ["/usr/bin/pm2", "start", "/var/www/pm2/ecosystem.config.yml"]
+CMD ["/usr/bin/pm2-runtime", "/var/www/pm2/ecosystem.config.yml"]
